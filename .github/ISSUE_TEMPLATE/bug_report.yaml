@@ -1,0 +1,74 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: []
+projects: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! The more information you provide, the faster we can repoduce the issue and resolve it
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of the package are you running?
+      placeholder: 5.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Flutter Doctor Output
+      description: Please copy and paste the output of `flutter doctor -v`. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: true
+  - type: dropdown
+    id: platforms
+    attributes:
+      label: What platforms are you seeing the problem on?
+      multiple: true
+      options:
+        - Android
+        - iOS
+        - Web
+        - macOS
+        - Windows
+        - Linux
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Please describe what the bug is and what you expected to happen.
+      placeholder: When switching to the second tab...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Please describe all the steps to reproduce the behavior
+      value: "1. Go to '...'\n2. Click on '....'\n3. Scroll down to '....'\n4. See error"
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Code to reproduce the problem
+      description: Insert all the code that is necessary to reproduce your issue (expecially, include the configuration of `PersistentTabView`). This will be automatically formatted into code, so no need for backticks.
+      render: dart
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
