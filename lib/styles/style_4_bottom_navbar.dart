@@ -7,13 +7,13 @@ class Style4BottomNavBar extends StatelessWidget {
     this.itemAnimationProperties = const ItemAnimation(),
     super.key,
     this.sliderHeight,
-    this.sliderPadding,
+    this.sliderPaddingHorizontal,
   });
 
   final NavBarConfig navBarConfig;
   final NavBarDecoration navBarDecoration;
   final double? sliderHeight;
-  final EdgeInsetsGeometry? sliderPadding;
+  final double? sliderPaddingHorizontal;
 
   /// This controls the animation properties of the items of the NavBar.
   final ItemAnimation itemAnimationProperties;
@@ -63,17 +63,16 @@ class Style4BottomNavBar extends StatelessWidget {
               AnimatedContainer(
                 duration: itemAnimationProperties.duration,
                 curve: itemAnimationProperties.curve,
-                width: itemWidth * navBarConfig.selectedIndex,
+                width: itemWidth * navBarConfig.selectedIndex +
+                    (sliderPaddingHorizontal ?? 0),
                 height: sliderHeight ?? 4,
-                padding: sliderPadding,
               ),
               AnimatedContainer(
                 duration: itemAnimationProperties.duration,
                 curve: itemAnimationProperties.curve,
-                width: itemWidth,
+                width: itemWidth - (sliderPaddingHorizontal ?? 0) * 2,
                 height: sliderHeight ?? 4,
                 alignment: Alignment.center,
-                padding: sliderPadding,
                 decoration: BoxDecoration(
                   color: navBarConfig.selectedItem.activeForegroundColor,
                   borderRadius: BorderRadius.circular(100),
