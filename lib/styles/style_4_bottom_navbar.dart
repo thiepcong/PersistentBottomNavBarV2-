@@ -9,6 +9,7 @@ class Style4BottomNavBar extends StatelessWidget {
     this.sliderHeight,
     this.sliderPaddingHorizontal,
     this.maxWidth,
+    this.backgroundColor,
   });
 
   final NavBarConfig navBarConfig;
@@ -16,6 +17,7 @@ class Style4BottomNavBar extends StatelessWidget {
   final double? sliderHeight;
   final double? sliderPaddingHorizontal;
   final double? maxWidth;
+  final Color? backgroundColor;
 
   /// This controls the animation properties of the items of the NavBar.
   final ItemAnimation itemAnimationProperties;
@@ -53,63 +55,73 @@ class Style4BottomNavBar extends StatelessWidget {
     final width = maxWidth ?? MediaQuery.of(context).size.width;
     final double itemWidth = (width - navBarDecoration.padding.horizontal) /
         navBarConfig.items.length;
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: width),
-        child: DecoratedNavBar(
-          decoration: navBarDecoration,
-          filter: navBarConfig.selectedItem.filter,
-          opacity: navBarConfig.selectedItem.opacity,
-          height: navBarConfig.navBarHeight,
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  AnimatedContainer(
-                    duration: itemAnimationProperties.duration,
-                    curve: itemAnimationProperties.curve,
-                    width: itemWidth * navBarConfig.selectedIndex +
-                        (sliderPaddingHorizontal ?? 0),
-                    height: sliderHeight ?? 4,
-                  ),
-                  AnimatedContainer(
-                    duration: itemAnimationProperties.duration,
-                    curve: itemAnimationProperties.curve,
-                    width: itemWidth - (sliderPaddingHorizontal ?? 0) * 2,
-                    height: sliderHeight ?? 4,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: navBarConfig.selectedItem.activeForegroundColor,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: navBarConfig.items.map((item) {
-                    final int index = navBarConfig.items.indexOf(item);
-                    return Flexible(
-                      child: InkWell(
-                        onTap: () {
-                          navBarConfig.onItemSelected(index);
-                        },
-                        child: Center(
-                          child: _buildItem(
-                            item,
-                            navBarConfig.selectedIndex == index,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: double.infinity,
+          color: backgroundColor ?? Colors.transparent,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: width),
+              child: DecoratedNavBar(
+                decoration: navBarDecoration,
+                filter: navBarConfig.selectedItem.filter,
+                opacity: navBarConfig.selectedItem.opacity,
+                height: navBarConfig.navBarHeight,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        AnimatedContainer(
+                          duration: itemAnimationProperties.duration,
+                          curve: itemAnimationProperties.curve,
+                          width: itemWidth * navBarConfig.selectedIndex +
+                              (sliderPaddingHorizontal ?? 0),
+                          height: sliderHeight ?? 4,
+                        ),
+                        AnimatedContainer(
+                          duration: itemAnimationProperties.duration,
+                          curve: itemAnimationProperties.curve,
+                          width: itemWidth - (sliderPaddingHorizontal ?? 0) * 2,
+                          height: sliderHeight ?? 4,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: navBarConfig.selectedItem.activeForegroundColor,
+                            borderRadius: BorderRadius.circular(100),
                           ),
                         ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: navBarConfig.items.map((item) {
+                          final int index = navBarConfig.items.indexOf(item);
+                          return Flexible(
+                            child: InkWell(
+                              onTap: () {
+                                navBarConfig.onItemSelected(index);
+                              },
+                              child: Center(
+                                child: _buildItem(
+                                  item,
+                                  navBarConfig.selectedIndex == index,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    );
-                  }).toList(),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
