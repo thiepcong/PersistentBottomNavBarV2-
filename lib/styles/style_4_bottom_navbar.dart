@@ -52,7 +52,8 @@ class Style4BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = maxWidth ?? MediaQuery.of(context).size.width;
+    final width = min(maxWidth ?? MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.width);
     final double itemWidth = (width - navBarDecoration.padding.horizontal) /
         navBarConfig.items.length;
     return Column(
@@ -88,7 +89,8 @@ class Style4BottomNavBar extends StatelessWidget {
                           height: sliderHeight ?? 4,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: navBarConfig.selectedItem.activeForegroundColor,
+                            color:
+                                navBarConfig.selectedItem.activeForegroundColor,
                             borderRadius: BorderRadius.circular(100),
                           ),
                         ),
