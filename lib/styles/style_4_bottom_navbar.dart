@@ -8,12 +8,14 @@ class Style4BottomNavBar extends StatelessWidget {
     super.key,
     this.sliderHeight,
     this.sliderPaddingHorizontal,
+    this.maxWidth,
   });
 
   final NavBarConfig navBarConfig;
   final NavBarDecoration navBarDecoration;
   final double? sliderHeight;
   final double? sliderPaddingHorizontal;
+  final double? maxWidth;
 
   /// This controls the animation properties of the items of the NavBar.
   final ItemAnimation itemAnimationProperties;
@@ -48,60 +50,65 @@ class Style4BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double itemWidth = (MediaQuery.of(context).size.width -
-            navBarDecoration.padding.horizontal) /
+    final width = maxWidth ?? MediaQuery.of(context).size.width;
+    final double itemWidth = (width - navBarDecoration.padding.horizontal) /
         navBarConfig.items.length;
-    return DecoratedNavBar(
-      decoration: navBarDecoration,
-      filter: navBarConfig.selectedItem.filter,
-      opacity: navBarConfig.selectedItem.opacity,
-      height: navBarConfig.navBarHeight,
-      child: Column(
-        children: <Widget>[
-          Row(
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: width),
+        child: DecoratedNavBar(
+          decoration: navBarDecoration,
+          filter: navBarConfig.selectedItem.filter,
+          opacity: navBarConfig.selectedItem.opacity,
+          height: navBarConfig.navBarHeight,
+          child: Column(
             children: <Widget>[
-              AnimatedContainer(
-                duration: itemAnimationProperties.duration,
-                curve: itemAnimationProperties.curve,
-                width: itemWidth * navBarConfig.selectedIndex +
-                    (sliderPaddingHorizontal ?? 0),
-                height: sliderHeight ?? 4,
+              Row(
+                children: <Widget>[
+                  AnimatedContainer(
+                    duration: itemAnimationProperties.duration,
+                    curve: itemAnimationProperties.curve,
+                    width: itemWidth * navBarConfig.selectedIndex +
+                        (sliderPaddingHorizontal ?? 0),
+                    height: sliderHeight ?? 4,
+                  ),
+                  AnimatedContainer(
+                    duration: itemAnimationProperties.duration,
+                    curve: itemAnimationProperties.curve,
+                    width: itemWidth - (sliderPaddingHorizontal ?? 0) * 2,
+                    height: sliderHeight ?? 4,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: navBarConfig.selectedItem.activeForegroundColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+                ],
               ),
-              AnimatedContainer(
-                duration: itemAnimationProperties.duration,
-                curve: itemAnimationProperties.curve,
-                width: itemWidth - (sliderPaddingHorizontal ?? 0) * 2,
-                height: sliderHeight ?? 4,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: navBarConfig.selectedItem.activeForegroundColor,
-                  borderRadius: BorderRadius.circular(100),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: navBarConfig.items.map((item) {
+                    final int index = navBarConfig.items.indexOf(item);
+                    return Flexible(
+                      child: InkWell(
+                        onTap: () {
+                          navBarConfig.onItemSelected(index);
+                        },
+                        child: Center(
+                          child: _buildItem(
+                            item,
+                            navBarConfig.selectedIndex == index,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
           ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: navBarConfig.items.map((item) {
-                final int index = navBarConfig.items.indexOf(item);
-                return Flexible(
-                  child: InkWell(
-                    onTap: () {
-                      navBarConfig.onItemSelected(index);
-                    },
-                    child: Center(
-                      child: _buildItem(
-                        item,
-                        navBarConfig.selectedIndex == index,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
