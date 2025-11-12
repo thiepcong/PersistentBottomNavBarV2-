@@ -77,8 +77,8 @@ class _InteractiveExampleState extends State<InteractiveExample> {
         navBarBuilder: (navBarConfig) => settings.navBarBuilder(
           navBarConfig,
           NavBarDecoration(
+            padding: EdgeInsets.zero,
             color: settings.navBarColor,
-            borderRadius: BorderRadius.circular(10),
           ),
           const ItemAnimation(),
           const NeumorphicProperties(),
@@ -97,6 +97,7 @@ class _InteractiveExampleState extends State<InteractiveExample> {
           ),
           child: const Icon(Icons.settings),
         ),
+        navBarHeight: 92,
         backgroundColor: Colors.green,
         margin: settings.margin,
         avoidBottomPadding: settings.avoidBottomPadding,

@@ -18,7 +18,7 @@ class Settings {
   bool avoidBottomPadding = true;
   Color navBarColor = Colors.white;
   NavBarBuilder get navBarBuilder => navBarStyles[navBarStyle]!;
-  String navBarStyle = "Style 1";
+  String navBarStyle = "Style 4";
   EdgeInsets margin = EdgeInsets.zero;
 
   Map<String, NavBarBuilder> navBarStyles = {
@@ -40,6 +40,17 @@ class Settings {
           navBarConfig: p0,
           navBarDecoration: p1,
           itemAnimationProperties: p2,
+          sliderHeight: 4,
+          sliderWidth: 32,
+          itemDecoration: (isSelected) => BoxDecoration(
+            gradient: LinearGradient(
+                colors: [
+                  isSelected ? Colors.red.withAlpha(100) : Colors.transparent,
+                  isSelected ? Colors.red.withAlpha(0) : Colors.transparent,
+                ].reversed.toList(),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
         ),
     "Style 5": (p0, p1, p2, p3) =>
         Style5BottomNavBar(navBarConfig: p0, navBarDecoration: p1),

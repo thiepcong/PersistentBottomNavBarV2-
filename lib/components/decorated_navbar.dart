@@ -17,36 +17,35 @@ class DecoratedNavBar extends StatelessWidget {
   final double height;
 
   @override
-  Widget build(BuildContext context) => Stack(
-        children: [
-          if (opacity < 1)
-            Positioned.fill(
-              child: ClipRect(
-                child: BackdropFilter(
-                  filter: decoration.filter ?? filter,
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
+  Widget build(BuildContext context) {
+    final double bottomInset = MediaQuery.of(context).padding.bottom;
+    final double totalHeight = height + bottomInset;
+    return Stack(
+      children: [
+        if (opacity < 1)
+          Positioned.fill(
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: decoration.filter ?? filter,
+                child: Container(
+                  color: Colors.transparent,
                 ),
               ),
             ),
-          DecoratedBox(
-            decoration: decoration.copyWith(
-              color: opacity != 1
-                  ? decoration.color?.withOpacity(opacity)
-                  : decoration.color,
-            ),
-            child: SafeArea(
-              top: false,
-              right: false,
-              left: false,
-              child: Container(
-                padding: decoration.padding,
-                height: height - decoration.borderHeight(),
-                child: child,
-              ),
-            ),
           ),
-        ],
-      );
+        DecoratedBox(
+          decoration: decoration.copyWith(
+            color: opacity != 1
+                ? decoration.color?.withOpacity(opacity)
+                : decoration.color,
+          ),
+          child: Container(
+            padding: decoration.padding,
+            height: totalHeight - decoration.borderHeight(),
+            child: child,
+          ),
+        ),
+      ],
+    );
+  }
 }

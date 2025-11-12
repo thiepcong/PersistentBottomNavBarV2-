@@ -14,6 +14,13 @@ void main() {
   );
   // make flutter draw behind navigation bar
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black.withAlpha(1),
+    ),
+  );
   runApp(const PersistenBottomNavBarDemo());
 }
 
